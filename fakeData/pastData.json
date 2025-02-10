@@ -1,0 +1,83 @@
+{
+  "body": [
+    {
+      "weight": 872,
+      "height": 150,
+      "unit": "metric",
+      "bodyFat": 16,
+      "date": "2025-01-15"
+    },
+    {
+      "weight": 868,
+      "height": 150,
+      "unit": "metric",
+      "bodyFat": 16,
+      "date": "2025-01-28"
+    },
+    {
+      "weight": 866,
+      "height": 150,
+      "unit": "metric",
+      "bodyFat": 16,
+      "date": "2025-01-30"
+    },
+    {
+      "weight": 862,
+      "height": 150,
+      "unit": "metric",
+      "bodyFat": 16,
+      "date": "2025-02-10"
+    },
+    {
+      "weight": 198,
+      "height": 57.87,
+      "unit": "imperial",
+      "bodyFat": 16,
+      "date": "2025-02-10T19:01:21.437Z"
+    },
+    {
+      "weight": 198,
+      "height": 57.87,
+      "unit": "imperial",
+      "bodyFat": 16,
+      "date": "2025-02-10T19:05:02.958Z"
+    },
+    {
+      "weight": 198,
+      "height": 57.87,
+      "unit": "imperial",
+      "bodyFat": 16,
+      "date": "2025-02-10T19:06:33.941Z"
+    },
+    {
+      "weight": 198,
+      "height": 57.87,
+      "unit": "imperial",
+      "bodyFat": 16,
+      "date": "2025-02-10T19:06:43.537Z"
+    }
+  ],
+  "water": [
+    {
+      "amount": 120,
+      "id" : 0,
+      "time": "2025-02-10T20:22:54.229Z",
+      "unit": "imperial",
+      "date": "2025-02-10T20:29:46.943Z"
+    },
+    {
+      "amount": 12,
+      "id" : 1,
+      "time": "2025-02-10T20:32:24.709Z",
+      "unit": "imperial",
+      "date": "2025-02-10T20:32:28.141Z"
+    },
+    {
+      "amount": 12,
+      "id" : 2,
+      "time": "2025-02-10T20:32:24.709Z",
+      "unit": "imperial",
+      "date": "2025-02-10T20:32:43.312Z"
+    }
+  ]
+}
