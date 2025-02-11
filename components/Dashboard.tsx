@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AreaChart, BarChart } from "@tremor/react"
-import { CalendarDays, Flame, Dumbbell, Target, GlassWater, ArrowDown01, ArrowDown } from "lucide-react"
+import { CalendarDays, Flame, Dumbbell, Target, GlassWater, ArrowDown01, ArrowDown, HamIcon } from "lucide-react"
 import { AddButton } from "./AddButton"
 import { WaterChart } from "./charts/Water"
 import { getWorkoutData, last7Days, minimumsSecondsForActivityLevel, SSgetDataFromLog, SSgetUserInfo } from "@/lib/utils"
@@ -8,7 +8,7 @@ import { calculateTodayWater } from "@/utils/calculations"
 import Table from "./charts/Table"
 import WeightChart from "./charts/Weight"
 import { WaterCard } from "./WaterCard"
-import { CaloriesIn } from "./CalorieCard"
+import { CaloriesIn, CaloriesOut } from "./CalorieCard"
 import { UserInfo, UserInfoType } from "@/lib/types"
 
 // Sample data - in a real app, this would come from your database
@@ -109,10 +109,10 @@ export async function Dashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Calorie Intake (Today)</CardTitle>
-            <ArrowDown className="h-4 w-4 text-primary" />
+            <HamIcon className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-500">{0}</div>
+            <CaloriesIn/>
           </CardContent>
         </Card>
         <Card>
@@ -121,7 +121,7 @@ export async function Dashboard() {
             <Flame className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <CaloriesIn/>
+            <CaloriesOut />
           </CardContent>
         </Card>
         <Card>
@@ -133,9 +133,7 @@ export async function Dashboard() {
             <WaterCard unit={unit} />
           </CardContent>
         </Card>
-        {/* Total Calories Card */}
 
-        {/* Active Days Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Sufficiently Active Days</CardTitle>

@@ -1,10 +1,10 @@
-import { DataType } from "@/components/providers/DataProvider"
-import { UserInfo  } from "@/components/providers/UserProviders"
+import { DataType, Workout } from "@/components/providers/DataProvider"
+
 import { Unit } from "@/utils/calculations"
 import { clsx, type ClassValue } from "clsx"
 import { Dispatch, SetStateAction } from "react"
 import { twMerge } from "tailwind-merge"
-import { UserInfoType } from "./types"
+import { UserInfo, UserInfoType } from "./types"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -98,17 +98,15 @@ export function normalizeWeight(weight: number, unit: Unit, srcUnit: Unit): numb
 }
 
 
-export async function getWorkoutData(props?: {setLoading?: Dispatch<SetStateAction<boolean>>, dataSetter?: Dispatch<SetStateAction<WorkoutsData>>}) : Promise<{data: DataType|null, loading: null, error: string|null}> {
+export async function getWorkoutData(props?: {setLoading: Dispatch<SetStateAction<boolean>>, dataSetter: Dispatch<SetStateAction<Workout[]>>}) : Promise<{data: DataType|null, loading: null, error: string|null}> {
   try {
     const response = await fetch(process.env.NEXT_PUBLIC_API_URL+"/workoutData")
     if (response.ok) {
         const data = await response.json()
         if (props){
-          if (props.dataSetter && props.setLoading) {
             const {setLoading, dataSetter} = props
             dataSetter(data)
             setLoading(false)
-          }
         }
         return {data, loading: null, error: null}
     } else {

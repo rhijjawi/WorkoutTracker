@@ -26,7 +26,6 @@ export function WaterChart({unit, ...props}:{unit?: "imperial"|"metric"}) {
                 }
                 return acc + curr.amount
             }, 0)
-            console.log(unit, userData)
             const getMaxSuggestedWater = calculateWaterIntake(unit == "imperial" ? (userData?.weight!/2.205) : (userData?.weight!), userData?.gender!, userData?.preferredActivityLevel!)*1000
             return {id: date, "Water Intake" : amount, "Minimum Required Water Intake": unit == "imperial" ? 64 : 2000, "Maximum suggested water intake" : getMaxSuggestedWater}
         }))

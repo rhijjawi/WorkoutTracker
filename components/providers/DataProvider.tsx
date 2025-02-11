@@ -23,7 +23,7 @@ export type DataType = {
     loading: boolean,
     water: Water[],
     setWater: React.Dispatch<React.SetStateAction<Water[]>>,
-    setWorkoutData: React.Dispatch<React.SetStateAction<Workout[]|null>>,
+    setWorkoutData: React.Dispatch<React.SetStateAction<Workout[]>>,
     body: HumanBody[],
     setBody: React.Dispatch<React.SetStateAction<HumanBody[]>>
 }
@@ -39,7 +39,7 @@ const Workouts = createContext<DataType>({
 })
 
 export function WorkoutProvider({children}: Readonly<{children: React.ReactNode}>) {
-    const [workoutData, setWorkoutData] = useState<DataType["workouts"]>(null)
+    const [workoutData, setWorkoutData] = useState<Workout[]>([])
     const [water, setWater] = useState<Water[]>([])
     const [body, setBody] = useState<HumanBody[]>([])
     const [loading, setLoading] = useState<boolean>(true)
@@ -47,7 +47,7 @@ export function WorkoutProvider({children}: Readonly<{children: React.ReactNode}
         async function _(){
             getWorkoutData({setLoading, dataSetter : setWorkoutData}).catch((e)=>{
                 toast.error(e, {richColors : true, duration : 3000})
-                setWorkoutData(null)
+                setWorkoutData([])
             })
             getDataFromLog("water").then((data) => {
                 if (data.data){
