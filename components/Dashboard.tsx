@@ -3,11 +3,13 @@ import { AreaChart, BarChart } from "@tremor/react"
 import { CalendarDays, Flame, Dumbbell, Target, GlassWater, ArrowDown01, ArrowDown } from "lucide-react"
 import { AddButton } from "./AddButton"
 import { WaterChart } from "./charts/Water"
-import { getWorkoutData, last7Days, SSgetDataFromLog, SSgetUserInfo } from "@/lib/utils"
+import { getWorkoutData, last7Days, minimumsSecondsForActivityLevel, SSgetDataFromLog, SSgetUserInfo } from "@/lib/utils"
 import { calculateTodayWater } from "@/utils/calculations"
 import Table from "./charts/Table"
 import WeightChart from "./charts/Weight"
 import { WaterCard } from "./WaterCard"
+import { CaloriesIn } from "./CalorieCard"
+import { UserInfo, UserInfoType } from "@/lib/types"
 
 // Sample data - in a real app, this would come from your database
 const calorieData = [
@@ -75,7 +77,7 @@ async function getWaterData(){
 }
 
 export async function Dashboard() {
-  const {userData} = await SSgetUserInfo()
+  const {userData} = await SSgetUserInfo() as {userData: UserInfoType, loading: null, error: string|null}
   const {unit} = userData?.preferences || {unit: "metric"} 
   const {data: workoutData, error} = await getWorkoutData()
   console.log(workoutData)
@@ -97,8 +99,7 @@ export async function Dashboard() {
       return curr.duration + acc
     }, 0)
   })]
-  console.log(daysActive)
-  const totalCalories = calorieData.reduce((sum, day) => sum + day["Calories Burned"], 0)
+
   return (
     <div className="p-6 bg-background text-foreground">
       <div className="mb-6">
@@ -111,7 +112,7 @@ export async function Dashboard() {
             <ArrowDown className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-500">{totalCalories}</div>
+            <div className="text-2xl font-bold text-green-500">{0}</div>
           </CardContent>
         </Card>
         <Card>
@@ -120,7 +121,7 @@ export async function Dashboard() {
             <Flame className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-500">{totalCalories}</div>
+            <CaloriesIn/>
           </CardContent>
         </Card>
         <Card>
@@ -137,14 +138,14 @@ export async function Dashboard() {
         {/* Active Days Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Days</CardTitle>
+            <CardTitle className="text-sm font-medium">Sufficiently Active Days</CardTitle>
             <CalendarDays className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{daysActive.filter((e)=>e! > 0).length}/7</div>
+            <div className="text-2xl font-bold">{daysActive.filter((e)=>e! > minimumsSecondsForActivityLevel[userData.preferredActivityLevel]).length}/7</div>
             <div className="flex flex-row justify-between">
               {daysActive.map((_, i, arr)=>{
-                return (<div key={"activity_"+i} className={`aspect-square w-[10%] rounded-md outline outline-black ${_! > 0 ? "bg-green-500/50" : "bg-red-500/50"} outline-1 ${i == arr.length-1 ? "animate-pulse" : ""} `}></div>)
+                return (<div key={"activity_"+i} className={`aspect-square w-[10%] rounded-md outline outline-black ${_! > minimumsSecondsForActivityLevel[userData.preferredActivityLevel] ? "bg-green-500/50" : "bg-red-500/50"} outline-1 ${i == arr.length-1 ? "animate-pulse" : ""} `}></div>)
               })}
             </div>
           </CardContent>

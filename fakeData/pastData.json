@@ -1,32 +1,39 @@
 {
+  "calories" : [
+    {
+      "date" : "2025-02-10T19:01:21.437Z",
+      "amount" : 100,
+      "direction" : "in"
+    }
+  ],
   "body": [
     {
       "weight": 80,
       "height": 150,
       "unit": "metric",
       "bodyFat": 16,
-      "date": "2025-01-15"
+      "date": "2025-02-10T19:01:21.437Z"
     },
     {
       "weight": 78,
       "height": 150,
       "unit": "metric",
       "bodyFat": 16,
-      "date": "2025-01-28"
+      "date": "2025-02-10T19:02:21.437Z"
     },
     {
       "weight": 79,
       "height": 150,
       "unit": "metric",
       "bodyFat": 16,
-      "date": "2025-01-30"
+      "date": "2025-02-10T19:03:21.437Z"
     },
     {
       "weight": 79,
       "height": 150,
       "unit": "metric",
       "bodyFat": 16,
-      "date": "2025-02-10"
+      "date": "2025-02-10T19:04:21.437Z"
     },
     {
       "weight": 198,

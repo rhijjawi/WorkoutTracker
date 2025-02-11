@@ -18,3 +18,21 @@ export type HumanBody = {
 
 export type Gender = "male" | "female";
 export type ActivityLevel = "sedentary" | "light" | "moderate" | "active" | "very_active";
+export type UserInfoType = {
+    name: string,
+    age: number,
+    height: number,
+    weight: number,
+    bodyFat: number,
+    gender: Gender,
+    preferredActivityLevel: ActivityLevel,
+    preferences: {
+        unit: Unit
+    },
+    unit: Unit,
+}
+
+export type UserInfo = {
+    userData: UserInfoType | null,
+    loading: boolean
+}

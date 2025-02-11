@@ -1,32 +1,16 @@
 "use client"
-import { ActivityLevel, Gender } from "@/lib/types";
+import { ActivityLevel, Gender, UserInfo, UserInfoType } from "@/lib/types";
 import { getUserInfo } from "@/lib/utils";
-import { Unit } from "@/utils/calculations";
 import { createContext, useContext, useEffect, useState } from "react";
 
-export type UserInfoType = {
-    userData: {
-        "name": string,
-        "age": number,
-        "height": number,
-        "weight": number,
-        "bodyFat": number,
-        "gender": Gender,
-        "preferredActivityLevel": ActivityLevel,
-        "preferences": {
-            "unit": Unit
-        }
-    } | null,
-    "loading": boolean
-}
 
-const UserPrefs = createContext<UserInfoType>({
+const UserPrefs = createContext<UserInfo>({
     loading: true,
     userData: null
 })
 
 export function UserPrefsProvider({children}: Readonly<{children: React.ReactNode}>) {
-    const [userData, setUserData] = useState<UserInfoType["userData"]>(null)
+    const [userData, setUserData] = useState<UserInfo["userData"]>(null)
     const [loading, setLoading] = useState<boolean>(true)
     useEffect(()=>{
         getUserInfo({setLoading, dataSetter: setUserData})

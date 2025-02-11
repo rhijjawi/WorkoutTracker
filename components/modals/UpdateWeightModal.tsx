@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { BmiCalculator } from "./BMIModal"
 import { UnitSwitcher } from "../UnitSwitcher"
 import { getUserInfo } from "@/lib/utils"
-import { UserInfoType, useUserPrefs } from "../providers/UserProviders"
+import { UserInfo, useUserPrefs } from "../providers/UserProviders"
 import { ActivityLevel } from "@/lib/types"
 interface UpdateBodyCharacteristicsModalProps {
   open: boolean
@@ -18,7 +18,7 @@ interface UpdateBodyCharacteristicsModalProps {
 
 export function UpdateBodyCharacteristicsModal({ open, onOpenChange }: UpdateBodyCharacteristicsModalProps) {
   const {userData, loading} = useUserPrefs()
-  const [formData, setFormData] = useState<UserInfoType["userData"]>(userData)
+  const [formData, setFormData] = useState<UserInfoType>(userData)
   
   const [unit, setUnit] = useState<"metric" | "imperial">("metric")
   useEffect(()=>{

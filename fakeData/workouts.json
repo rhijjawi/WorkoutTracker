@@ -102,13 +102,7 @@
             "date" : "2025-01-30",
             "geojson" : null
         },
-        {
-            "type" : "swimming",
-            "distance_metric" : 1000,
-            "duration" : 1800,
-            "date" : "2025-02-10",
-            "geojson" : null
-        },
+
         {
             "type" : "swimming",
             "distance_metric" : 1000,

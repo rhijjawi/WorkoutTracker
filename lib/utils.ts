@@ -1,9 +1,10 @@
 import { DataType } from "@/components/providers/DataProvider"
-import { UserInfoType } from "@/components/providers/UserProviders"
+import { UserInfo  } from "@/components/providers/UserProviders"
 import { Unit } from "@/utils/calculations"
 import { clsx, type ClassValue } from "clsx"
 import { Dispatch, SetStateAction } from "react"
 import { twMerge } from "tailwind-merge"
+import { UserInfoType } from "./types"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -120,10 +121,10 @@ export async function getWorkoutData(props?: {setLoading?: Dispatch<SetStateActi
 }
 export const last7Days = new Array(7).fill(0).map((_, i) => {
   const date = new Date()
-  date.setDate(date.getDate() - (7 - i))
+  date.setDate(date.getDate() - (6 - i))
   return date.toISOString().split("T")[0]
 })
-export async function getUserInfo({setLoading, dataSetter}:{setLoading?: Dispatch<SetStateAction<boolean>>, dataSetter?: Dispatch<SetStateAction<UserInfoType["userData"]>>}) {
+export async function getUserInfo({setLoading, dataSetter}:{setLoading?: Dispatch<SetStateAction<boolean>>, dataSetter?: Dispatch<SetStateAction<UserInfo["userData"]>>}) {
   try {
       setLoading && setLoading(true)
       const response = await fetch("/api/userInfo")
@@ -144,7 +145,7 @@ export async function getUserInfo({setLoading, dataSetter}:{setLoading?: Dispatc
   }
   return {userData: null, loading: null}
 }
-export async function SSgetUserInfo() : Promise<{userData?: UserInfoType["userData"], loading: null, error: string|null}> {
+export async function SSgetUserInfo() : Promise<{userData?: UserInfo["userData"], loading: null, error: string|null}> {
   try {
       const response = await fetch(process.env.__NEXT_PRIVATE_ORIGIN+"/api/userInfo")
       if (response.ok) {
@@ -160,10 +161,10 @@ export async function SSgetUserInfo() : Promise<{userData?: UserInfoType["userDa
   return {userData: null, loading: null, error: "Failed to fetch user info"}
 }
 
-export const minimumsSecondsForActivityLevel = {
+export const minimumsSecondsForActivityLevel : Record<UserInfoType["preferredActivityLevel"], number> = {
   sedentary: 1800,
   light: 2700,
   moderate: 3600,
   active: 5400,
-  veryActive: 7200,
+  very_active: 7200,
 }
