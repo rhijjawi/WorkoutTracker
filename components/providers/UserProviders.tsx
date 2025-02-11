@@ -1,5 +1,7 @@
 "use client"
+import { ActivityLevel, Gender } from "@/lib/types";
 import { getUserInfo } from "@/lib/utils";
+import { Unit } from "@/utils/calculations";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export type UserInfoType = {
@@ -9,10 +11,10 @@ export type UserInfoType = {
         "height": number,
         "weight": number,
         "bodyFat": number,
-        "gender": string,
-        "preferredActivityLevel": string,
+        "gender": Gender,
+        "preferredActivityLevel": ActivityLevel,
         "preferences": {
-            "unit": "metric" | "imperial"
+            "unit": Unit
         }
     } | null,
     "loading": boolean
@@ -31,7 +33,7 @@ export function UserPrefsProvider({children}: Readonly<{children: React.ReactNod
     }, [])
     return (
         <UserPrefs.Provider value={{userData: userData, loading: loading}}>
-            {children}
+            {loading ? <></> : children}
         </UserPrefs.Provider>
     )
 }

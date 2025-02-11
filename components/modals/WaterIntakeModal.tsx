@@ -9,6 +9,8 @@ import DatePicker from "@/components/ui/date-picker"
 import { set } from "date-fns"
 import { useUserPrefs } from "../providers/UserProviders"
 import { toast } from "sonner"
+import { useWorkouts } from "../providers/DataProvider"
+import { Water } from "@/lib/types"
 
 interface WaterIntakeModalProps {
   open: boolean
@@ -18,6 +20,7 @@ interface WaterIntakeModalProps {
 export function WaterIntakeModal({ open, onOpenChange }: WaterIntakeModalProps) {
   const [amount, setAmount] = useState<number|string>(0)
   const [time, setTime] = useState<Date|undefined>(new Date())
+  const {setWater} = useWorkouts()
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (Number.isNaN(Number(e.target.value))){
       const nums = e.target.value.match(/\d+/g)
@@ -46,6 +49,9 @@ export function WaterIntakeModal({ open, onOpenChange }: WaterIntakeModalProps) 
     })
     if (response.ok) {
       toast.success("Water intake saved", {richColors : true, duration : 3000})
+      setWater((prev) => {
+        return [...prev, {amount : Number(amount), time : time?.toISOString()!, unit: userData?.preferences.unit as string, date: new Date().toISOString()}] as Water[]
+      })
       onOpenChange(false)
     }
     else {

@@ -1,6 +1,5 @@
-import { WorkoutsData } from "@/components/providers/DataProvider"
+import { DataType, WorkoutsData } from "@/components/providers/DataProvider"
 import { UserInfoType } from "@/components/providers/UserProviders"
-import { Unit } from "@/utils/calculations"
 import { clsx, type ClassValue } from "clsx"
 import { Dispatch, SetStateAction } from "react"
 import { twMerge } from "tailwind-merge"
@@ -89,30 +88,39 @@ export async function SSgetDataFromLog(key?: string) : Promise<{data?: any[], er
 //   return Ratios[measurement]?.[unit] ?? 1;
 // }
 
-export async function getWorkoutData({setLoading, dataSetter}:{setLoading: Dispatch<SetStateAction<boolean>>, dataSetter: Dispatch<SetStateAction<WorkoutsData>>}){
+export async function getWorkoutData(props?: {setLoading?: Dispatch<SetStateAction<boolean>>, dataSetter?: Dispatch<SetStateAction<WorkoutsData>>}) : Promise<{data: DataType|null, loading: null, error: string|null}> {
   try {
-    const response = await fetch("/api/workoutData")
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL+"/workoutData")
     if (response.ok) {
         const data = await response.json()
-        dataSetter(data)
-        setLoading(false)
+        if (props){
+          if (props.dataSetter && props.setLoading) {
+            const {setLoading, dataSetter} = props
+            dataSetter(data)
+            setLoading(false)
+          }
+        }
+        return {data, loading: null, error: null}
     } else {
-        console.error("Failed to fetch user info")
+        
     }
 } catch (error) {
-    console.error("Error fetching user info:", error)
+    
 }
+  return {data: null, loading: null, error: "Failed to fetch workout info"}
 }
 export const last7Days = new Array(7).fill(0).map((_, i) => {
   const date = new Date()
-  date.setDate(date.getDate() - i)
+  date.setDate(date.getDate() - (7 - i))
   return date.toISOString().split("T")[0]
 })
 export async function getUserInfo({setLoading, dataSetter}:{setLoading?: Dispatch<SetStateAction<boolean>>, dataSetter?: Dispatch<SetStateAction<UserInfoType["userData"]>>}) {
   try {
+      setLoading && setLoading(true)
       const response = await fetch("/api/userInfo")
       if (response.ok) {
           const data = await response.json()
+          console.log(data)
           if (setLoading && dataSetter) {
             dataSetter(data)
             setLoading(false)

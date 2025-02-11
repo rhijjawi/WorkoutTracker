@@ -1,24 +1,22 @@
 "use client"
 import { getDataFromLog, SSgetDataFromLog } from "@/lib/utils"
-import { AreaChart } from "@tremor/react"
+import { AreaChart, LineChart } from "@tremor/react"
 import { useEffect, useState } from "react"
 import { last7Days } from "@/lib/utils"
+import { useWorkouts } from "../providers/DataProvider"
+import { useUserPrefs } from "../providers/UserProviders"
+import { calculateWaterIntake } from "@/utils/calculations"
 export function WaterChart({unit, ...props}:{unit?: "imperial"|"metric"}) {
-    const [data, setData] = useState<any[]|null>(null)
+    const {water} = useWorkouts()
+    const {userData, loading} = useUserPrefs()
     const [waterIntakePast7Days, setWaterIntakePast7Days] = useState<any[]|null>([])
     useEffect(()=>{
-        async function _(){
-            const __ = await getDataFromLog("water")
-            if (__.data) {
-                setData(__.data)
-            }
-        }
-        _()
-    }, [])
-    useEffect(()=>{
-        if (!data) return
+        if (!water) return
+        if (loading) return
         setWaterIntakePast7Days(last7Days.map((date) => {
-            const dayData = data.filter((d) => d.time.split("T")[0] == date)
+            const dayData = water.filter((d) => {
+                return d.time.split("T")[0] == date
+            })
             const amount = dayData.reduce((acc, curr) => {
                 if (unit == "imperial" && curr.unit == "metric"){
                     return acc + curr.amount * 0.033814
@@ -28,17 +26,20 @@ export function WaterChart({unit, ...props}:{unit?: "imperial"|"metric"}) {
                 }
                 return acc + curr.amount
             }, 0)
-            return {id: date, "Water Intake" : amount, "Minimum Required Water Intake": unit == "imperial" ? 64 : 2000}
-        }).reverse())
-    }, [data])
+            console.log(unit, userData)
+            const getMaxSuggestedWater = calculateWaterIntake(unit == "imperial" ? (userData?.weight!/2.205) : (userData?.weight!), userData?.gender!, userData?.preferredActivityLevel!)*1000
+            return {id: date, "Water Intake" : amount, "Minimum Required Water Intake": unit == "imperial" ? 64 : 2000, "Maximum suggested water intake" : getMaxSuggestedWater}
+        }))
+    }, [water])
     if (!waterIntakePast7Days) return (null)
     return (
-        <AreaChart
+        <>
+        <LineChart
             className="h-full"
             data={waterIntakePast7Days}
             index="id"
-            categories={["Water Intake", "Minimum Required Water Intake"]}
-            colors={["blue", "red"]}
+            categories={["Water Intake", "Minimum Required Water Intake", "Maximum suggested water intake"]}
+            colors={["blue", "red", "emerald"]}
             valueFormatter={(v) => {
                 return `${v} ${unit == "imperial" ? "fl. oz" : "ml"}`
             }}
@@ -48,5 +49,6 @@ export function WaterChart({unit, ...props}:{unit?: "imperial"|"metric"}) {
             yAxisLabel={unit == "imperial" ? "fl. oz" : "ml"}
             showLegend={true}
         />
+        </>
     )
 }

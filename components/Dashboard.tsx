@@ -3,8 +3,10 @@ import { AreaChart, BarChart } from "@tremor/react"
 import { CalendarDays, Flame, Dumbbell, Target, GlassWater, ArrowDown01, ArrowDown } from "lucide-react"
 import { AddButton } from "./AddButton"
 import { WaterChart } from "./charts/Water"
-import { last7Days, SSgetDataFromLog, SSgetUserInfo } from "@/lib/utils"
+import { getWorkoutData, last7Days, SSgetDataFromLog, SSgetUserInfo } from "@/lib/utils"
 import { calculateTodayWater } from "@/utils/calculations"
+import Table from "./charts/Table"
+import { WaterCard } from "./WaterCard"
 
 // Sample data - in a real app, this would come from your database
 const calorieData = [
@@ -45,7 +47,7 @@ const calorieData = [
   },
 ]
 
-const workoutData = [
+const __workoutData = [
   {
     name: "Cardio",
     minutes: 45,
@@ -73,10 +75,18 @@ async function getWaterData(){
 
 export async function Dashboard() {
   const {userData} = await SSgetUserInfo()
-  const {unit} = userData?.preferences || {unit: "metric"}
+  const {unit} = userData?.preferences || {unit: "metric"} 
   const {water} = await getWaterData()
-  if (!water) return (<></>)
-  const [todayWater] = [calculateTodayWater(water, unit)]
+  const {data: workoutData, error} = await getWorkoutData()
+  console.log(workoutData)
+  if (error || !water) {
+    return (<>
+    {error}
+    </>)
+  }
+  const [past7dayWorkouts] = [last7Days.map((date) => {
+    workoutData?.workouts
+  })]
   const totalCalories = calorieData.reduce((sum, day) => sum + day["Calories Burned"], 0)
   return (
     <div className="p-6 bg-background text-foreground">
@@ -108,7 +118,7 @@ export async function Dashboard() {
             <GlassWater className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl"><span className="font-bold text-blue-500">{todayWater.toFixed(2).endsWith(".00") ? todayWater : todayWater.toFixed(2).endsWith(".00")}</span> <span className="font-bold">{unit == "metric" ? "ml" : "fl.oz"}</span></div>
+            <WaterCard unit={unit} />
           </CardContent>
         </Card>
         {/* Total Calories Card */}
@@ -171,17 +181,11 @@ export async function Dashboard() {
         {/* Workout Distribution */}
         <Card className="flex flex-col">
           <CardHeader>
-            <CardTitle>Workout Distribution (minutes)</CardTitle>
+            <CardTitle>Recent Workouts</CardTitle>
           </CardHeader>
           <CardContent className="h-full">
-            <BarChart
-              className="h-full"
-              data={workoutData}
-              index="name"
-              colors={["orange"]}
-              categories={["minutes"]}
-              yAxisWidth={40}
-              showLegend={false}
+            <Table
+              data={workoutData?.workouts || []}
             />
           </CardContent>
         </Card>

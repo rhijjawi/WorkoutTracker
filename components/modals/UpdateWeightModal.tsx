@@ -10,27 +10,23 @@ import { BmiCalculator } from "./BMIModal"
 import { UnitSwitcher } from "../UnitSwitcher"
 import { getUserInfo } from "@/lib/utils"
 import { UserInfoType, useUserPrefs } from "../providers/UserProviders"
+import { ActivityLevel } from "@/lib/types"
 interface UpdateBodyCharacteristicsModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
 export function UpdateBodyCharacteristicsModal({ open, onOpenChange }: UpdateBodyCharacteristicsModalProps) {
-  const [formData, setFormData] = useState<UserInfoType["userData"]>({
-    name: "",
-    age: "",
-    height: "",
-    weight: "",
-    bodyFat: "",
-    gender: "male",
-    preferredActivityLevel: "light",
-    preferences: {
-      unit: "metric",
-    }
-  })
   const {userData, loading} = useUserPrefs()
-  const [unit, setUnit] = useState<"metric" | "imperial">(formData.preferences.unit)
-
+  const [formData, setFormData] = useState<UserInfoType["userData"]>(userData)
+  
+  const [unit, setUnit] = useState<"metric" | "imperial">("metric")
+  useEffect(()=>{
+    if (!loading){
+      console.log(userData)
+      setFormData(userData)
+    }
+  }, [loading])
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value })
   }
@@ -80,7 +76,7 @@ export function UpdateBodyCharacteristicsModal({ open, onOpenChange }: UpdateBod
       console.error("Error updating user info:", error)
     }
   }
-
+  if (loading) return (<></>)
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
@@ -112,7 +108,7 @@ export function UpdateBodyCharacteristicsModal({ open, onOpenChange }: UpdateBod
             <Label htmlFor="preferredActivityLevel">Preferred Activity Level</Label>
             <Select
               value={formData.preferredActivityLevel}
-              onValueChange={(value : "light"|"moderate"|"active"|"very_active") => setFormData({ ...formData, preferredActivityLevel: value })}
+              onValueChange={(value : "light"|"moderate"|"active"|"very_active") => setFormData({ ...formData, preferredActivityLevel: value as ActivityLevel })}
             >
               <SelectTrigger id="preferredActivityLevel">
                 <SelectValue placeholder="Select activity level" />
