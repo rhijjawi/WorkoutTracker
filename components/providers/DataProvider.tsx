@@ -1,5 +1,5 @@
 "use client"
-import { Water } from "@/lib/types";
+import { HumanBody, Water } from "@/lib/types";
 import { getDataFromLog, getWorkoutData } from "@/lib/utils";
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -23,20 +23,25 @@ export type DataType = {
     loading: boolean,
     water: Water[],
     setWater: React.Dispatch<React.SetStateAction<Water[]>>,
-    setWorkoutData: React.Dispatch<React.SetStateAction<Workout[]|null>>
+    setWorkoutData: React.Dispatch<React.SetStateAction<Workout[]|null>>,
+    body: HumanBody[],
+    setBody: React.Dispatch<React.SetStateAction<HumanBody[]>>
 }
 
 const Workouts = createContext<DataType>({
     loading: true,
     workouts: null,
-    setWater : () => [],
     setWorkoutData : () => [],
+    setWater : () => [],
+    setBody: () => [],
+    body: [],
     water: []
 })
 
 export function WorkoutProvider({children}: Readonly<{children: React.ReactNode}>) {
     const [workoutData, setWorkoutData] = useState<DataType["workouts"]>(null)
     const [water, setWater] = useState<Water[]>([])
+    const [body, setBody] = useState<HumanBody[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     useEffect(()=>{
         async function _(){
@@ -52,11 +57,19 @@ export function WorkoutProvider({children}: Readonly<{children: React.ReactNode}
                 toast.error("Failed to fetch water intake data", {richColors : true, duration : 3000})
                 setWater([])
             })
+            getDataFromLog("body").then((data) => {
+                if (data.data){
+                    toast.success("Successfully fetched body data", {richColors : true, duration : 3000})
+                    return setBody(data.data)
+                }
+                toast.error("Failed to fetch body data", {richColors : true, duration : 3000})
+                setBody([])
+            })
         }
         _();
     }, [])
     return (
-        <Workouts.Provider value={{workouts : workoutData, loading, water, setWater, setWorkoutData}}>
+        <Workouts.Provider value={{workouts : workoutData, loading, water, setWater, setWorkoutData, body, setBody}}>
             {children}
         </Workouts.Provider>
     )

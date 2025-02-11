@@ -103,6 +103,34 @@
             "geojson" : null
         },
         {
+            "type" : "swimming",
+            "distance_metric" : 1000,
+            "duration" : 1800,
+            "date" : "2025-02-10",
+            "geojson" : null
+        },
+        {
+            "type" : "swimming",
+            "distance_metric" : 1000,
+            "duration" : 1800,
+            "date" : "2025-02-10",
+            "geojson" : null
+        },
+        {
+            "type" : "swimming",
+            "distance_metric" : 1000,
+            "duration" : 1800,
+            "date" : "2025-02-05",
+            "geojson" : null
+        },
+        {
+            "type" : "swimming",
+            "distance_metric" : 1000,
+            "duration" : 1800,
+            "date" : "2025-02-05",
+            "geojson" : null
+        },
+        {
             "type": "cycling",
             "distance_metric": 32000,
             "duration": 7200,

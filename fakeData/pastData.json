@@ -1,28 +1,28 @@
 {
   "body": [
     {
-      "weight": 872,
+      "weight": 80,
       "height": 150,
       "unit": "metric",
       "bodyFat": 16,
       "date": "2025-01-15"
     },
     {
-      "weight": 868,
+      "weight": 78,
       "height": 150,
       "unit": "metric",
       "bodyFat": 16,
       "date": "2025-01-28"
     },
     {
-      "weight": 866,
+      "weight": 79,
       "height": 150,
       "unit": "metric",
       "bodyFat": 16,
       "date": "2025-01-30"
     },
     {
-      "weight": 862,
+      "weight": 79,
       "height": 150,
       "unit": "metric",
       "bodyFat": 16,
@@ -144,6 +144,18 @@
       "time": "2025-02-11T00:36:36.833Z",
       "unit": "imperial",
       "date": "2025-02-11T00:37:20.228Z"
+    },
+    {
+      "amount": 2,
+      "time": "2025-02-11T01:45:47.870Z",
+      "unit": "metric",
+      "date": "2025-02-11T01:46:38.823Z"
+    },
+    {
+      "amount": 2,
+      "time": "2025-02-11T01:45:47.870Z",
+      "unit": "metric",
+      "date": "2025-02-11T01:46:44.289Z"
     }
   ]
 }

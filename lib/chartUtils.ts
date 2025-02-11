@@ -4,7 +4,7 @@ export type ColorUtility = "bg" | "stroke" | "fill" | "text"
 
 export const chartColors = {
   blue: {
-    bg: "bg-blue-600",
+    bg: "bg-blue-500",
     stroke: "stroke-blue-500",
     fill: "fill-blue-500",
     text: "text-blue-500",

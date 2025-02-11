@@ -1,5 +1,6 @@
-import { DataType, WorkoutsData } from "@/components/providers/DataProvider"
+import { DataType } from "@/components/providers/DataProvider"
 import { UserInfoType } from "@/components/providers/UserProviders"
+import { Unit } from "@/utils/calculations"
 import { clsx, type ClassValue } from "clsx"
 import { Dispatch, SetStateAction } from "react"
 import { twMerge } from "tailwind-merge"
@@ -88,6 +89,14 @@ export async function SSgetDataFromLog(key?: string) : Promise<{data?: any[], er
 //   return Ratios[measurement]?.[unit] ?? 1;
 // }
 
+export function normalizeWeight(weight: number, unit: Unit, srcUnit: Unit): number {
+  if (unit === srcUnit) {
+    return weight;
+  }
+  return unit === "metric" ? weight * 2.20462 : weight * 0.453592;
+}
+
+
 export async function getWorkoutData(props?: {setLoading?: Dispatch<SetStateAction<boolean>>, dataSetter?: Dispatch<SetStateAction<WorkoutsData>>}) : Promise<{data: DataType|null, loading: null, error: string|null}> {
   try {
     const response = await fetch(process.env.NEXT_PUBLIC_API_URL+"/workoutData")
@@ -149,4 +158,12 @@ export async function SSgetUserInfo() : Promise<{userData?: UserInfoType["userDa
       console.error("Error fetching user info:", error)
   }
   return {userData: null, loading: null, error: "Failed to fetch user info"}
+}
+
+export const minimumsSecondsForActivityLevel = {
+  sedentary: 1800,
+  light: 2700,
+  moderate: 3600,
+  active: 5400,
+  veryActive: 7200,
 }

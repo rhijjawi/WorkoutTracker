@@ -123,7 +123,7 @@ export function UpdateBodyCharacteristicsModal({ open, onOpenChange }: UpdateBod
             </Select>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="units">Preffered Unit</Label>
+            <Label htmlFor="units">Unit</Label>
             <UnitSwitcher unit={unit} onUnitChange={()=>{
               setFormData({...formData, preferences: {unit: unit == "imperial" ? "metric" : "imperial"}})
               unit == "imperial" ? setUnit("metric") : setUnit("imperial")

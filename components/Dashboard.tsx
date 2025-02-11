@@ -6,6 +6,7 @@ import { WaterChart } from "./charts/Water"
 import { getWorkoutData, last7Days, SSgetDataFromLog, SSgetUserInfo } from "@/lib/utils"
 import { calculateTodayWater } from "@/utils/calculations"
 import Table from "./charts/Table"
+import WeightChart from "./charts/Weight"
 import { WaterCard } from "./WaterCard"
 
 // Sample data - in a real app, this would come from your database
@@ -76,17 +77,27 @@ async function getWaterData(){
 export async function Dashboard() {
   const {userData} = await SSgetUserInfo()
   const {unit} = userData?.preferences || {unit: "metric"} 
-  const {water} = await getWaterData()
   const {data: workoutData, error} = await getWorkoutData()
   console.log(workoutData)
-  if (error || !water) {
+  if (error) {
     return (<>
     {error}
     </>)
   }
-  const [past7dayWorkouts] = [last7Days.map((date) => {
-    workoutData?.workouts
+  const [past7daySumWorkouts, daysActive] = [last7Days.map((date) => {
+    const todayExercises = workoutData?.workouts.filter((d) => {
+      return d.date.split("T")[0] == date
+    });
+    return todayExercises?.length ?? 0
+  }).reduce((acc, curr)=>acc + curr, 0), last7Days.map((date) => {
+    const todayExercises = workoutData?.workouts.filter((d) => {
+      return d.date.split("T")[0] == date
+    })
+    return todayExercises?.reduce((acc, curr) => {
+      return curr.duration + acc
+    }, 0)
   })]
+  console.log(daysActive)
   const totalCalories = calorieData.reduce((sum, day) => sum + day["Calories Burned"], 0)
   return (
     <div className="p-6 bg-background text-foreground">
@@ -130,7 +141,12 @@ export async function Dashboard() {
             <CalendarDays className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">5/7</div>
+            <div className="text-2xl font-bold">{daysActive.filter((e)=>e! > 0).length}/7</div>
+            <div className="flex flex-row justify-between">
+              {daysActive.map((_, i, arr)=>{
+                return (<div key={"activity_"+i} className={`aspect-square w-[10%] rounded-md outline outline-black ${_! > 0 ? "bg-green-500/50" : "bg-red-500/50"} outline-1 ${i == arr.length-1 ? "animate-pulse" : ""} `}></div>)
+              })}
+            </div>
           </CardContent>
         </Card>
 
@@ -141,7 +157,7 @@ export async function Dashboard() {
             <Dumbbell className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12</div>
+            <div className="text-2xl font-bold">{past7daySumWorkouts}</div>
           </CardContent>
         </Card>
 
@@ -183,7 +199,7 @@ export async function Dashboard() {
           <CardHeader>
             <CardTitle>Recent Workouts</CardTitle>
           </CardHeader>
-          <CardContent className="h-full">
+          <CardContent className="h-full overflow-y-auto">
             <Table
               data={workoutData?.workouts || []}
             />
@@ -200,20 +216,12 @@ export async function Dashboard() {
         </Card>
 
         {/* Workout Distribution */}
-        <Card>
+        <Card className="flex flex-col">
           <CardHeader>
             <CardTitle>Workout Distribution (minutes)</CardTitle>
           </CardHeader>
-          <CardContent>
-            <BarChart
-              className="h-72"
-              data={workoutData}
-              index="name"
-              colors={["orange"]}
-              categories={["minutes"]}
-              yAxisWidth={40}
-              showLegend={false}
-            />
+          <CardContent className="h-full">
+            <WeightChart unit={unit}/>
           </CardContent>
         </Card>
         
