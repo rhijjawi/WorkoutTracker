@@ -5,9 +5,11 @@ import { useWorkouts } from "@/components/providers/DataProvider";
 import { HumanBody } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { normalizeWeight } from "@/lib/utils";
+import { useUnit } from "../providers/UnitSwitchProvider";
 
-export default function Weight({unit}:{unit: Unit}){
+export default function Weight(){
     const {body, loading} = useWorkouts()
+    const {unit} = useUnit()
     const [weightData, setWeightData] = useState<HumanBody[]|null>([])
     useEffect(()=>{
         if (loading) return

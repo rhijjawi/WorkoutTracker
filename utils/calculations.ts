@@ -40,9 +40,9 @@ export function calculateBMR(
   return Math.round(bmr)
 }
 
-export function calculateWaterIntake(weightKg: number, gender: Gender, activityLevel: ActivityLevel): number {
+export function calculateWaterIntake(weight: number, gender: Gender, activityLevel: ActivityLevel, unit: Unit): number {
   const baseWaterPerKg = gender === "male" ? 0.04 : 0.035;
-  let waterIntake = weightKg * baseWaterPerKg;
+  let waterIntake = weight * baseWaterPerKg;
   const activityMultipliers: Record<ActivityLevel, number> = {
     sedentary: 1.0,      
     light: 1.1,         

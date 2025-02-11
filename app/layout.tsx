@@ -3,6 +3,7 @@ import './globals.css'
 import { UserPrefsProvider } from '@/components/providers/UserProviders'
 import { Toaster } from '@/components/ui/sonner'
 import { WorkoutProvider } from '@/components/providers/DataProvider'
+import { UnitProvider } from '@/components/providers/UnitSwitchProvider'
 
 export const metadata: Metadata = {
   title: "Rumi & Ramzi's Fitness Tracker",
@@ -18,7 +19,9 @@ export default function RootLayout({
       <body>
         <UserPrefsProvider>
           <WorkoutProvider>
-            {children}
+            <UnitProvider>
+              {children}
+            </UnitProvider>
             <Toaster />
           </WorkoutProvider>
         </UserPrefsProvider>

@@ -18,10 +18,11 @@ import Map, { Layer, LineLayerSpecification, MapRef, Marker, Source } from 'reac
 import type {FeatureCollection} from 'geojson';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useUserPrefs } from "../providers/UserProviders"
+import { useUnit } from "../providers/UnitSwitchProvider"
 
 export default function _Table({data}: {data : Workout[], openModal?: Workout, setOpenModal?: React.Dispatch<React.SetStateAction<Workout>>}) {
     const [openModal, setOpenModal] = useState<Workout|null>(null)
-    const [center, setCenter] = useState<[number, number]>([0, 0])
+    const {unit} = useUnit()
     const leafletRef = useRef<MapRef|null>(null)
     const [geoData, setGeoData] = useState<FeatureCollection|null>(null)
     const [geoJson, setGeoJson] = useState<[number, number][]|null>(null)
@@ -114,7 +115,6 @@ export default function _Table({data}: {data : Workout[], openModal?: Workout, s
                 </TableHead>
                 <TableBody className="overflow-y-auto h-full">
                 {data.map((item, idx) => {
-                    const {unit} = userData?.preferences!
                     const standardizedUnit = unit == "imperial" ? "mi" : "km"
                     const distance = unit == "imperial" ? (item.distance_metric / 1000) * 0.621371 : item.distance_metric / 1000
 

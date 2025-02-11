@@ -1,4 +1,5 @@
 import { Unit } from "@/utils/calculations"
+import { Dispatch, SetStateAction } from "react"
 
 export type Water = {
     amount: number,
@@ -34,5 +35,10 @@ export type UserInfoType = {
 
 export type UserInfo = {
     userData: UserInfoType | null,
+    loading: boolean
+}
+export type UnitSwitcherProviderProps = {
+    unit: Unit|null,
+    setUnit:  Dispatch<SetStateAction<"metric" | "imperial" | null>>,
     loading: boolean
 }

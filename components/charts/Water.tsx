@@ -6,8 +6,10 @@ import { last7Days } from "@/lib/utils"
 import { useWorkouts } from "../providers/DataProvider"
 import { useUserPrefs } from "../providers/UserProviders"
 import { calculateWaterIntake } from "@/utils/calculations"
-export function WaterChart({unit, ...props}:{unit?: "imperial"|"metric"}) {
+import { useUnit } from "../providers/UnitSwitchProvider"
+export function WaterChart() {
     const {water} = useWorkouts()
+    const {unit} = useUnit()
     const {userData, loading} = useUserPrefs()
     const [waterIntakePast7Days, setWaterIntakePast7Days] = useState<any[]|null>([])
     useEffect(()=>{
@@ -26,10 +28,12 @@ export function WaterChart({unit, ...props}:{unit?: "imperial"|"metric"}) {
                 }
                 return acc + curr.amount
             }, 0)
-            const getMaxSuggestedWater = calculateWaterIntake(unit == "imperial" ? (userData?.weight!/2.205) : (userData?.weight!), userData?.gender!, userData?.preferredActivityLevel!)*1000
+            const weightInKg = userData?.unit === "imperial" ? (userData?.weight! / 2.205) : userData?.weight!;
+            const maxSuggestedWaterL = calculateWaterIntake(weightInKg, userData?.gender!, userData?.preferredActivityLevel!, unit!);
+            const getMaxSuggestedWater = unit === "imperial" ? parseFloat((maxSuggestedWaterL * 33.814).toFixed(2)) : maxSuggestedWaterL*1000;
             return {id: date, "Water Intake" : amount, "Minimum Required Water Intake": unit == "imperial" ? 64 : 2000, "Maximum suggested water intake" : getMaxSuggestedWater}
         }))
-    }, [water])
+    }, [water, unit])
     if (!waterIntakePast7Days) return (null)
     return (
         <>

@@ -1,6 +1,8 @@
+"use client"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import type { Unit } from "@/utils/calculations"
+import { useUnit } from "./providers/UnitSwitchProvider"
 
 interface UnitSwitcherProps {
   unit: Unit
@@ -16,6 +18,20 @@ export function UnitSwitcher({ unit, onUnitChange }: UnitSwitcherProps) {
         onCheckedChange={(checked) => onUnitChange(checked ? "imperial" : "metric")}
       />
       <Label htmlFor="unit-switch">{unit === "metric" ? "Metric (kg/cm)" : "Imperial (lbs/in)"}</Label>
+    </div>
+  )
+}
+
+export function UnitSwitcherUser() {
+  const {unit, setUnit} = useUnit()
+  return (
+    <div className="flex items-center space-x-2">
+      <Switch
+        id="unit-switch_"
+        checked={unit === "imperial"}
+        onCheckedChange={(checked) => setUnit(checked ? "imperial" : "metric")}
+      />
+      <Label htmlFor="unit-switch_">{unit === "metric" ? "Metric (kg/cm)" : "Imperial (lbs/in)"}</Label>
     </div>
   )
 }

@@ -10,6 +10,7 @@ import WeightChart from "./charts/Weight"
 import { WaterCard } from "./WaterCard"
 import { CaloriesIn, CaloriesOut } from "./CalorieCard"
 import { UserInfo, UserInfoType } from "@/lib/types"
+import { UnitSwitcher, UnitSwitcherUser } from "./UnitSwitcher"
 
 // Sample data - in a real app, this would come from your database
 const calorieData = [
@@ -102,8 +103,9 @@ export async function Dashboard() {
 
   return (
     <div className="p-6 bg-background text-foreground">
-      <div className="mb-6">
+      <div className="flex flex-row justify-between items-center mb-6">
         <AddButton />
+        <UnitSwitcherUser />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
         <Card>
@@ -210,17 +212,17 @@ export async function Dashboard() {
             <CardTitle>Daily Water Intake</CardTitle>
           </CardHeader>
           <CardContent className="h-full">
-            <WaterChart unit={unit} />
+            <WaterChart />
           </CardContent>
         </Card>
 
         {/* Workout Distribution */}
         <Card className="flex flex-col">
           <CardHeader>
-            <CardTitle>Workout Distribution (minutes)</CardTitle>
+            <CardTitle>Historical Weight Data ({unit == "metric" ? "kg" : "lbs"})</CardTitle>
           </CardHeader>
           <CardContent className="h-full">
-            <WeightChart unit={unit}/>
+            <WeightChart/>
           </CardContent>
         </Card>
         

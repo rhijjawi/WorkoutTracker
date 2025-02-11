@@ -8,6 +8,6 @@
   "preferredActivityLevel": "sedentary",
   "unit": "metric",
   "preferences": {
-    "unit": "metric"
+    "unit": "imperial"
   }
 }

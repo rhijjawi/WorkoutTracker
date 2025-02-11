@@ -2,10 +2,12 @@
 import { useEffect, useState } from "react"
 import { useWorkouts } from "./providers/DataProvider"
 import { calculateTodayWater, Unit } from "@/utils/calculations"
+import { useUnit } from "./providers/UnitSwitchProvider"
 
-export function WaterCard({unit} : {unit: Unit}) {
+export function WaterCard() {
     const {water, setWater} = useWorkouts()
     const [todayWater, setTodayWater] = useState<number>(0)
+    const {unit} = useUnit()
     useEffect(()=>{
         setTodayWater(calculateTodayWater(water, unit))
     }, [water])
