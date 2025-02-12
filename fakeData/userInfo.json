@@ -2,12 +2,12 @@
   "name": "Peter Parker",
   "age": 20,
   "height": 158,
-  "weight": 79,
+  "weight": 85,
   "bodyFat": 16,
   "gender": "male",
   "preferredActivityLevel": "sedentary",
   "unit": "metric",
   "preferences": {
-    "unit": "imperial"
+    "unit": "metric"
   }
 }

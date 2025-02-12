@@ -8,6 +8,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react"
 
 const useUnits = createContext<UnitSwitcherProviderProps>({
     unit: null,
+    hasBeenModified: false,
     setUnit: () => {},
     loading: true,
 })
@@ -15,6 +16,7 @@ const useUnits = createContext<UnitSwitcherProviderProps>({
 export function UnitProvider({children}: Readonly<{children: React.ReactNode}>) {
     const [unit, setUnit] = useState<Unit|null>(null)
     const [loading, setLoading] = useState<boolean>(true)
+    const [hasBeenModified, setHasBeenModified] = useState<boolean>(false)
     const prevState = useRef<null|Unit>(null)
     useEffect(()=>{
         async function _(){
@@ -39,12 +41,13 @@ export function UnitProvider({children}: Readonly<{children: React.ReactNode}>) 
                 }
             })
             const {unit: _unit} = await r.json()
+            setHasBeenModified(true)
             setLoading(false)
         }
         _();
     }, [unit])
     return (
-        <useUnits.Provider value={{unit, setUnit, loading: loading}}>
+        <useUnits.Provider value={{unit, setUnit, loading: loading, hasBeenModified}}>
             {loading ? <></> : children}
         </useUnits.Provider>
     )

@@ -63,7 +63,6 @@ export function calculateTodayWater(water: Water[], unit: Unit) : number {
     else if (unit == "metric" && curr.unit == "imperial") {
       return acc + curr.amount * 29.5735
     }
-    console.log(water, unit)
     return acc + curr.amount
   }, 0)
 }

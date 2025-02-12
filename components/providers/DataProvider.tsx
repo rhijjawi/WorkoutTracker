@@ -25,7 +25,9 @@ export type DataType = {
     setWater: React.Dispatch<React.SetStateAction<Water[]>>,
     setWorkoutData: React.Dispatch<React.SetStateAction<Workout[]>>,
     body: HumanBody[],
-    setBody: React.Dispatch<React.SetStateAction<HumanBody[]>>
+    setBody: React.Dispatch<React.SetStateAction<HumanBody[]>>,
+    calories: any[],
+    setCalories: React.Dispatch<React.SetStateAction<any[]>>
 }
 
 const Workouts = createContext<DataType>({
@@ -34,6 +36,8 @@ const Workouts = createContext<DataType>({
     setWorkoutData : () => [],
     setWater : () => [],
     setBody: () => [],
+    calories: [],
+    setCalories: () => [],
     body: [],
     water: []
 })
@@ -43,6 +47,7 @@ export function WorkoutProvider({children}: Readonly<{children: React.ReactNode}
     const [water, setWater] = useState<Water[]>([])
     const [body, setBody] = useState<HumanBody[]>([])
     const [loading, setLoading] = useState<boolean>(true)
+    const [calories, setCalories] = useState<HumanBody[]>([])
     useEffect(()=>{
         async function _(){
             getWorkoutData({setLoading, dataSetter : setWorkoutData}).catch((e)=>{
@@ -65,11 +70,19 @@ export function WorkoutProvider({children}: Readonly<{children: React.ReactNode}
                 toast.error("Failed to fetch body data", {richColors : true, duration : 3000})
                 setBody([])
             })
+            getDataFromLog("calories").then((data) => {
+                if (data.data){
+                    toast.success("Successfully fetched calorie data", {richColors : true, duration : 3000})
+                    return setCalories(data.data)
+                }
+                toast.error("Failed to fetch body data", {richColors : true, duration : 3000})
+                setCalories([])
+            })
         }
         _();
     }, [])
     return (
-        <Workouts.Provider value={{workouts : workoutData, loading, water, setWater, setWorkoutData, body, setBody}}>
+        <Workouts.Provider value={{workouts : workoutData, calories, setCalories, loading, water, setWater, setWorkoutData, body, setBody}}>
             {children}
         </Workouts.Provider>
     )

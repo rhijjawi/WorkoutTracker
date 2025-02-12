@@ -11,9 +11,9 @@ export default function Weight(){
     const {body, loading} = useWorkouts()
     const {unit} = useUnit()
     const [weightData, setWeightData] = useState<HumanBody[]|null>([])
+
     useEffect(()=>{
         if (loading) return
-        // setWeightData(body)
         setWeightData(body.sort((a, b) => {
             return new Date(a.date).getTime() - new Date(b.date).getTime()
         }).map((weight)=>{

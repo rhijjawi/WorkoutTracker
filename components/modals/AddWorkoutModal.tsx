@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { toast } from "sonner"
 
 interface AddWorkoutModalProps {
   open: boolean
@@ -13,10 +14,10 @@ interface AddWorkoutModalProps {
 }
 
 export function AddWorkoutModal({ open, onOpenChange }: AddWorkoutModalProps) {
-  const [workoutType, setWorkoutType] = useState("")
-  async function submitForm() {
-    
-  }
+  const [workoutType, setWorkoutType] = useState(null)
+  const [duration, setDuration] = useState<number>(0)
+  const [date, setDate] = useState<Date>(new Date())
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">

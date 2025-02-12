@@ -79,7 +79,7 @@ async function getWaterData(){
 
 export async function Dashboard() {
   const {userData} = await SSgetUserInfo() as {userData: UserInfoType, loading: null, error: string|null}
-  const {unit} = userData?.preferences || {unit: "metric"} 
+  const {unit} = userData?.preferences
   const {data: workoutData, error} = await getWorkoutData()
   console.log(workoutData)
   if (error) {
