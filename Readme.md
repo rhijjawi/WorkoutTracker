@@ -1,4 +1,4 @@
-#Clone and run the program
+# Clone and run the program
 
 1. git clone https://github.com/rhijjawi/workouttracker
 2. cd workouttracker/
